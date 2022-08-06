@@ -1,3 +1,4 @@
 2022/08/06 20:47:00 {"callers":["I:/gopath/src/httpgin/main.go: 23 main.init.0"],"level":"fatal","message":"%s: go-programming-tour-book/%seddycjyblog-service","time":1659790020633995800}
 2022/08/06 20:47:40 {"callers":["I:/gopath/src/httpgin/main.go: 23 main.init.0"],"level":"info","message":"eddycjy: go-programming-tour-book/blog-service","time":1659790060506557800}
 2022/08/06 22:43:30 {"callers":["I:/gopath/src/httpgin/main.go: 23 main.init.0"],"level":"error","message":"app.BindAndValid errs: State必须是[0 1]中的一个","time":1659797010622459600}
+2022/08/06 23:44:09 {"callers":["I:/gopath/src/httpgin/main.go: 23 main.init.0"],"level":"error","message":"app.BindAndValid errs: Key: 'State' Error:Field validation for 'State' failed on the 'oneof' tag","time":1659800649915451800}

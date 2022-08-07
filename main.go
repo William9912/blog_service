@@ -33,10 +33,9 @@ func init() {
 func main() {
 	gin.SetMode(global.ServerSetting.RunMode)
 	router := routers.NewRouter()
-	fmt.Println("nihaoshijie")
-	global.Logger.Infof("%s: go-programming-tour-book/%s", "eddycjy", "blog-service")
+	//global.Logger.Infof("%s: go-programming-tour-book/%s", "eddycjy", "blog-service")
 	s := &http.Server{
-		Addr:           ":" + "8000",
+		Addr:           ":" + global.ServerSetting.HttpPort,
 		Handler:        router,
 		ReadTimeout:    global.ServerSetting.ReadTimeout,
 		WriteTimeout:   global.ServerSetting.WriteTimeout,

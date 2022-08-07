@@ -23,7 +23,8 @@ type CreateTagRequest struct {
 }
 
 type UpdateTagRequest struct {
-	ID   uint32 `form:"id" binding:"required,gte=1"`
+	ID uint32 `form:"id" binding:"required,gte=1"`
+	//min 比require的优先级高 没有的话 也是会报错 min改为0的话可以不传入name
 	Name string `form:"name" binding:"min=3,max=100"`
 	//not unit8 but *uint8 because 0 in uint8 maybe ignore but pointer won't
 	//binding:"required"会认为0是空值而不通过校验

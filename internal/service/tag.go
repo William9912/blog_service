@@ -23,9 +23,13 @@ type CreateTagRequest struct {
 }
 
 type UpdateTagRequest struct {
-	ID         uint32 `form:"id" binding:"required,gte=1"`
-	Name       string `form:"name" binding:"min=3,max=100"`
-	State      uint8  `form:"state" binding:"required,oneof=0 1"`
+	ID   uint32 `form:"id" binding:"required,gte=1"`
+	Name string `form:"name" binding:"min=3,max=100"`
+	//not unit8 but *uint8 because 0 in uint8 maybe ignore but pointer won't
+	//binding:"required"会认为0是空值而不通过校验
+	//把整数字段改成整数指针类型，指针没有默认值0
+	//有一个新的问题 form中的 0(1) 是怎么被bind到 *int 上的呢 这么智能么
+	State      *uint8 `form:"state" binding:"required,oneof=0 1"`
 	ModifiedBy string `form:"modified_by" binding:"required,min=3,max=100"`
 }
 
@@ -46,7 +50,7 @@ func (svc *Service) CreateTag(param *CreateTagRequest) error {
 }
 
 func (svc *Service) UpdateTag(param *UpdateTagRequest) error {
-	return svc.dao.UpdateTag(param.ID, param.Name, param.State, param.ModifiedBy)
+	return svc.dao.UpdateTag(param.ID, param.Name, *param.State, param.ModifiedBy)
 }
 
 func (svc *Service) DeleteTag(param *DeleteTagRequest) error {

@@ -1,5 +1,6 @@
 package model
 
+//一般情况下还是把以下的方法放到gorm.DB的居多
 import "github.com/jinzhu/gorm"
 
 type Tag struct {
@@ -46,8 +47,13 @@ func (t Tag) Create(db *gorm.DB) error {
 	return db.Create(&t).Error
 }
 
-func (t Tag) Update(db *gorm.DB) error {
-	return db.Model(&Tag{}).Where("id = ? AND is_del = ?", t.ID, 0).Update(t).Error
+//改成values因为请求的时候0可能无法插入
+func (t Tag) Update(db *gorm.DB, values interface{}) error {
+	if err := db.Model(t).Where("id = ? AND is_del = ?", t.ID, 0).Updates(values).Error; err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (t Tag) Delete(db *gorm.DB) error {

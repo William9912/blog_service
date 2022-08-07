@@ -1,5 +1,6 @@
 package service
 
+//service层 调用dao层
 import (
 	"blog-service/internal/model"
 	"blog-service/pkg/app"

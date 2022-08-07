@@ -1,5 +1,6 @@
 package dao
 
+//dao层调用model中 也就是真正的数据库层 一般情况下还是
 import (
 	"blog-service/internal/model"
 	"blog-service/pkg/app"
@@ -28,12 +29,18 @@ func (d *Dao) CreateTag(name string, state uint8, createdBy string) error {
 
 func (d *Dao) UpdateTag(id uint32, name string, state uint8, modifiedBy string) error {
 	tag := model.Tag{
-		Name:  name,
-		State: state,
-		Model: &model.Model{ID: id, ModifiedBy: modifiedBy},
+		Model: &model.Model{ID: id},
+	}
+	values := map[string]interface{}{
+		"state":       state,
+		"modified_by": modifiedBy,
+	}
+	//在 GORM 中使用 struct 类型传入进行更新时，GORM 是不会对值为零值的字段进行变更
+	if name != "" {
+		values["name"] = name
 	}
 
-	return tag.Update(d.engine)
+	return tag.Update(d.engine, values)
 }
 
 func (d *Dao) DeleteTag(id uint32) error {

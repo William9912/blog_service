@@ -1,7 +1,10 @@
 package routers
 
 import (
+	"blog-service/global"
+	"blog-service/internal/routers/api"
 	v1 "blog-service/internal/routers/api/v1"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
@@ -14,6 +17,9 @@ func NewRouter() *gin.Engine {
 
 	article := v1.NewArticle()
 	tag := v1.NewTag()
+	upload := api.NewUpload()
+	r.POST("/upload/file", upload.UploadFile)
+	r.StaticFS("/static", http.Dir(global.AppSetting.UploadSavePath))
 	apiv1 := r.Group("/api/v1")
 	{
 		apiv1.POST("/tags", tag.Create)

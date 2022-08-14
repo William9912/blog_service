@@ -2,6 +2,7 @@ package routers
 
 import (
 	"blog-service/global"
+	"blog-service/internal/middleware"
 	"blog-service/internal/routers/api"
 	v1 "blog-service/internal/routers/api/v1"
 	"net/http"
@@ -17,10 +18,12 @@ func NewRouter() *gin.Engine {
 
 	article := v1.NewArticle()
 	tag := v1.NewTag()
+
 	upload := api.NewUpload()
 	r.POST("/upload/file", upload.UploadFile)
 	r.StaticFS("/static", http.Dir(global.AppSetting.UploadSavePath))
-	apiv1 := r.Group("/api/v1")
+	r.POST("/auth", api.GetAuth)
+	apiv1 := r.Group("/api/v1").Use(middleware.JWT())
 	{
 		apiv1.POST("/tags", tag.Create)
 		apiv1.DELETE("/tags/:id", tag.Delete)

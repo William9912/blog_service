@@ -13,6 +13,7 @@ func (a Auth) TableName() string {
 }
 
 //git rebase test 4
+//git rebase test 5
 func (a Auth) Get(db *gorm.DB) (Auth, error) {
 	var auth Auth
 	db = db.Where("app_key = ? AND app_secret = ? AND is_del = ?", a.AppKey, a.AppSecret, 0)

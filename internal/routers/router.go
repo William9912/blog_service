@@ -2,17 +2,37 @@ package routers
 
 import (
 	"blog-service/global"
+	"blog-service/internal/middleware"
 	"blog-service/internal/routers/api"
 	v1 "blog-service/internal/routers/api/v1"
+	"blog-service/pkg/limiter"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
 
+//只限制/auth路由之下的流量
+var methodLimiters = limiter.NewMethodLimiter().AddBuckets(limiter.LimiterBucketRule{
+	Key:          "/auth",
+	FillInterval: time.Second,
+	Capacity:     10,
+	Quantum:      10,
+})
+
 func NewRouter() *gin.Engine {
 	r := gin.New()
-	r.Use(gin.Logger())
-	r.Use(gin.Recovery())
+	if global.ServerSetting.RunMode == "debug" {
+		r.Use(gin.Logger())
+		r.Use(gin.Recovery())
+	} else {
+		r.Use(middleware.AccessLog())
+		r.Use(middleware.Recovery())
+	}
+
+	r.Use(middleware.RateLimiter(methodLimiters))
+	r.Use(middleware.ContextTimeout(60 * time.Second))
+	r.Use(middleware.Translations())
 	//r.Use(middleware.Translations())
 
 	article := v1.NewArticle()
@@ -22,7 +42,7 @@ func NewRouter() *gin.Engine {
 	r.POST("/upload/file", upload.UploadFile)
 	r.StaticFS("/static", http.Dir(global.AppSetting.UploadSavePath))
 	r.POST("/auth", api.GetAuth)
-	apiv1 := r.Group("/api/v1") //.Use(middleware.JWT())
+	apiv1 := r.Group("/api/v1").Use(middleware.JWT())
 	{
 		apiv1.POST("/tags", tag.Create)
 		apiv1.DELETE("/tags/:id", tag.Delete)

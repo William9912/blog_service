@@ -44,6 +44,7 @@ func main() {
 	s.ListenAndServe()
 }
 func setupSetting() error {
+	//读取配置
 	setting, err := setting.NewSetting()
 	if err != nil {
 		return err
@@ -68,8 +69,10 @@ func setupSetting() error {
 	if err != nil {
 		return err
 	}
-
+	global.AppSetting.DefaultContextTimeout *= time.Microsecond
+	fmt.Printf("DefaultContextTimeout: %#v \n", global.AppSetting.DefaultContextTimeout)
 	global.JWTSetting.Expire *= time.Second
+	fmt.Printf("jwt Expire: %#v \n", global.JWTSetting.Expire)
 	global.ServerSetting.ReadTimeout *= time.Second
 	global.ServerSetting.WriteTimeout *= time.Second
 	return nil

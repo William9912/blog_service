@@ -23,6 +23,7 @@ func NewMethodLimiter() LimiterIface {
 //可以理解为limter实现了limiterInterface根据LimiterBucketRule向Limter中添加ratelimit.NewBucketWithQuantum
 func (l MethodLimiter) Key(c *gin.Context) string {
 	uri := c.Request.RequestURI
+	//经过确认 uri 是/auth 没有http
 	fmt.Println("uri:" + uri)
 	index := strings.Index(uri, "?")
 	if index == -1 {

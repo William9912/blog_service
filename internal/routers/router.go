@@ -13,9 +13,10 @@ import (
 )
 
 //只限制/auth路由之下的流量
+//设置/auth下的令牌容量，添加令牌间隔，最大令牌数目
 var methodLimiters = limiter.NewMethodLimiter().AddBuckets(limiter.LimiterBucketRule{
 	Key:          "/auth",
-	FillInterval: time.Second,
+	FillInterval: 10 * time.Second,
 	Capacity:     10,
 	Quantum:      10,
 })
@@ -31,7 +32,7 @@ func NewRouter() *gin.Engine {
 	}
 
 	r.Use(middleware.RateLimiter(methodLimiters))
-	r.Use(middleware.ContextTimeout(60 * time.Second))
+	r.Use(middleware.ContextTimeout(global.AppSetting.DefaultContextTimeout))
 	r.Use(middleware.Translations())
 	//r.Use(middleware.Translations())
 

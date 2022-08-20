@@ -4,6 +4,7 @@ Server:
   ReadTimeout: 60
   WriteTimeout: 60
 App:
+  DefaultContextTimeout: 1
   DefaultPageSize: 10
   MaxPageSize: 100
   LogSavePath: storage/logs
@@ -35,7 +36,7 @@ JWT:
 Email:
   Host: smtp.qq.com
   Port: 465
-  UserName: 2358634245@@qq.com
+  UserName: 2358634245@qq.com
   Password: ofcmwcgbshvjdjce
   IsSSL: true
   From: 2358634245@qq.com

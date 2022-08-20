@@ -2,6 +2,7 @@ package setting
 
 import "time"
 
+//全局配置定义
 type ServerSettingS struct {
 	RunMode      string
 	HttpPort     string
@@ -10,15 +11,16 @@ type ServerSettingS struct {
 }
 
 type AppSettingS struct {
-	DefaultPageSize      int
-	MaxPageSize          int
-	LogSavePath          string
-	LogFileName          string
-	LogFileExt           string
-	UploadSavePath       string
-	UploadServerUrl      string
-	UploadImageMaxSize   int
-	UploadImageAllowExts []string
+	DefaultPageSize       int
+	MaxPageSize           int
+	LogSavePath           string
+	LogFileName           string
+	LogFileExt            string
+	UploadSavePath        string
+	UploadServerUrl       string
+	UploadImageMaxSize    int
+	DefaultContextTimeout time.Duration
+	UploadImageAllowExts  []string
 }
 
 type DatabaseSettingS struct {

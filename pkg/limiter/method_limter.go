@@ -1,6 +1,7 @@
 package limiter
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -22,6 +23,7 @@ func NewMethodLimiter() LimiterIface {
 //可以理解为limter实现了limiterInterface根据LimiterBucketRule向Limter中添加ratelimit.NewBucketWithQuantum
 func (l MethodLimiter) Key(c *gin.Context) string {
 	uri := c.Request.RequestURI
+	fmt.Println("uri:" + uri)
 	index := strings.Index(uri, "?")
 	if index == -1 {
 		return uri
